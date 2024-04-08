@@ -8,12 +8,16 @@ const createStudent = async(req,res)=>{
     const data = req.body;
     // const createdStudent = await studentModel.create(data);
     const createdStudent = await studentModel.insertMany([data,data,data]);
-    return res.send({status:true, messages:createdStudent});
+    return res.status(201).send({status:true, messages:createdStudent});
 }
 const deleteStudent = async(req,res)=>{
     // const data = await studentModel.deleteMany({name:'raja nayak'});
-    const data = await studentModel.findByIdAndDelete({_id:'660f88cf83748d3c1b8d7908'});
-    return res.send({status:true, messages:data});
+    try{
+        const data = await studentModel.findByIdAndDelete({_id:'660f88cf83748d3c1b8d7908'});
+        return res.send({status:true, messages:data});
+    }catch(error){
+        return res.status(500).send({status:"failed",message:error.message})
+    }
 }
 const updateStudent = async(req,res)=>{
     const newStudent = await studentModel.updateOne({"name":"raja"},{$set:{"name":"Praja"}});
